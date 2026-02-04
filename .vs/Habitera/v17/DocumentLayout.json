@@ -1,0 +1,312 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Controllers\\AuthenticationController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Controllers\\AuthenticationController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\TokenService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Services\\TokenService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\EmailService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Services\\EmailService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\AuthenticationService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Services\\AuthenticationService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Repositories\\UnitOfWork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Repositories\\UnitOfWork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Repositories\\Repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Repositories\\Repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Models\\Common.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Models\\Common.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Models\\Authentication.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Models\\Authentication.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Middleware\\UsersMiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Middleware\\UsersMiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Middleware\\ExceptionHandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Middleware\\ExceptionHandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Mappings\\AuthenticationMapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Mappings\\AuthenticationMapping.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\DTOs\\CommonDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\DTOs\\CommonDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\DTOs\\AuthenticationDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\DTOs\\AuthenticationDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Data\\ApplicationDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\Data\\ApplicationDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{a80febb4-e7e0-4147-b476-21aaf2453969}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthenticationController.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Controllers\\AuthenticationController.cs",
+              "RelativeDocumentMoniker": "src\\api\\Controllers\\AuthenticationController.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Controllers\\AuthenticationController.cs",
+              "RelativeToolTip": "src\\api\\Controllers\\AuthenticationController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANsAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T22:00:25.485Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TokenService.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\TokenService.cs",
+              "RelativeDocumentMoniker": "src\\api\\Services\\TokenService.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\TokenService.cs",
+              "RelativeToolTip": "src\\api\\Services\\TokenService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:59:45.136Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\EmailService.cs",
+              "RelativeDocumentMoniker": "src\\api\\Services\\EmailService.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\EmailService.cs",
+              "RelativeToolTip": "src\\api\\Services\\EmailService.cs",
+              "ViewState": "AgIAANEAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:59:33.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AuthenticationService.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\AuthenticationService.cs",
+              "RelativeDocumentMoniker": "src\\api\\Services\\AuthenticationService.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Services\\AuthenticationService.cs",
+              "RelativeToolTip": "src\\api\\Services\\AuthenticationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:56:44.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Program.cs",
+              "RelativeDocumentMoniker": "src\\api\\Program.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Program.cs",
+              "RelativeToolTip": "src\\api\\Program.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAADEAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:44:09.766Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UnitOfWork.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Repositories\\UnitOfWork.cs",
+              "RelativeDocumentMoniker": "src\\api\\Repositories\\UnitOfWork.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Repositories\\UnitOfWork.cs",
+              "RelativeToolTip": "src\\api\\Repositories\\UnitOfWork.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:56:23.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Repository.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Repositories\\Repository.cs",
+              "RelativeDocumentMoniker": "src\\api\\Repositories\\Repository.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Repositories\\Repository.cs",
+              "RelativeToolTip": "src\\api\\Repositories\\Repository.cs",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:56:01.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Common.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Models\\Common.cs",
+              "RelativeDocumentMoniker": "src\\api\\Models\\Common.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Models\\Common.cs",
+              "RelativeToolTip": "src\\api\\Models\\Common.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:55:37.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Authentication.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Models\\Authentication.cs",
+              "RelativeDocumentMoniker": "src\\api\\Models\\Authentication.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Models\\Authentication.cs",
+              "RelativeToolTip": "src\\api\\Models\\Authentication.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:55:11.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UsersMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Middleware\\UsersMiddleware.cs",
+              "RelativeDocumentMoniker": "src\\api\\Middleware\\UsersMiddleware.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Middleware\\UsersMiddleware.cs",
+              "RelativeToolTip": "src\\api\\Middleware\\UsersMiddleware.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:53:49.438Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ExceptionHandler.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Middleware\\ExceptionHandler.cs",
+              "RelativeDocumentMoniker": "src\\api\\Middleware\\ExceptionHandler.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Middleware\\ExceptionHandler.cs",
+              "RelativeToolTip": "src\\api\\Middleware\\ExceptionHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:53:31.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AuthenticationMapping.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Mappings\\AuthenticationMapping.cs",
+              "RelativeDocumentMoniker": "src\\api\\Mappings\\AuthenticationMapping.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Mappings\\AuthenticationMapping.cs",
+              "RelativeToolTip": "src\\api\\Mappings\\AuthenticationMapping.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:52:42.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CommonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\DTOs\\CommonDTO.cs",
+              "RelativeDocumentMoniker": "src\\api\\DTOs\\CommonDTO.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\DTOs\\CommonDTO.cs",
+              "RelativeToolTip": "src\\api\\DTOs\\CommonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:52:24.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AuthenticationDTO.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\DTOs\\AuthenticationDTO.cs",
+              "RelativeDocumentMoniker": "src\\api\\DTOs\\AuthenticationDTO.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\DTOs\\AuthenticationDTO.cs",
+              "RelativeToolTip": "src\\api\\DTOs\\AuthenticationDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:51:49.127Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "src\\api\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "src\\api\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-04T21:51:05.595Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\api\\appsettings.json",
+              "ToolTip": "C:\\Users\\dimojiakuo\\Desktop\\code\\Habitera\\src\\api\\appsettings.json",
+              "RelativeToolTip": "src\\api\\appsettings.json",
+              "ViewState": "AgIAAAMAAAAAAAAAAADwvyoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-04T21:48:49.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
