@@ -492,6 +492,26 @@ function AppContent() {
     setCurrentScreen("add-property");
   };
 
+  const handleProfileCompletionRequired = (data: {
+    username: string;
+    phoneNumber?: string;
+    credentials: {
+      username: string;
+      password: string;
+      cachedUsername: string;
+      isReturningUser: boolean;
+    };
+  }) => {
+    startTransition(() => {
+      // Navigate to profile completion screen
+      setCurrentScreen("complete-profile");
+
+      console.log(
+        "🔐 Profile Completion required - navigating to Profile Completion Screen",
+      );
+    });
+  };
+
   
   const isBusinessOwner = () => {
     return userRole === "agent";
@@ -564,26 +584,6 @@ function AppContent() {
     });
   };
 
-   const handleProfileCompletionRequired = (data: {
-    username: string;
-    phoneNumber?: string;
-    credentials: {
-      username: string;
-      password: string;
-      cachedUsername: string;
-      isReturningUser: boolean;
-    };
-  }) => {
-    startTransition(() => {
-      // setDeviceVerificationCredentials(data.credentials);
-      // setCurrentScreen("device-verification-otp");
-      setCurrentScreen("complete-profile");
-
-      console.log(
-        "🔐 Profile Completion required - navigating to Profile Completion Screen",
-      );
-    });
-  };
 
   const handleOTPRequired = (data: {
     username: string;

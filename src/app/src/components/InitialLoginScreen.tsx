@@ -1,10 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Eye, EyeOff, Fingerprint, User, Shield, Lock, Download, X, Loader2 } from 'lucide-react';
-import { motion } from 'motion/react';
-import { Button } from './ui/button';
-import { toast } from 'sonner';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
-import React from 'react';
+import { useState, useEffect, useRef } from "react";
+import {
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  Fingerprint,
+  User,
+  Shield,
+  Lock,
+  Download,
+  X,
+  Loader2,
+} from "lucide-react";
+import { motion } from "motion/react";
+import { Button } from "./ui/button";
+import { toast } from "sonner";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
+import React from "react";
 import {
   getUsername,
   setUsername as setStoredUsername,
@@ -15,21 +26,34 @@ import {
   wasExplicitLogout,
   clearExplicitLogoutFlag,
 } from "../stores/storage";
-import useBiometricAuth from '../hooks/auth/useBiometricAuth';
-import { getOverridesForComponent } from '../utils/overrides';
-import { FloatingLabelInput } from './FloatingLabelInput';
-
+import useBiometricAuth from "../hooks/auth/useBiometricAuth";
+import { getOverridesForComponent } from "../utils/overrides";
+import { FloatingLabelInput } from "./FloatingLabelInput";
 
 interface InitialLoginScreenProps {
   onBack?: () => void;
-  onLogin: (credentials: { identifier: string; password: string; isReturningUser?: boolean }) => void;
+  onLogin: (credentials: {
+    identifier: string;
+    password: string;
+    isReturningUser?: boolean;
+  }) => void;
   onSignUp: () => void;
   onCreateProfile?: () => void;
   onPasswordChangeRequired?: (response: any) => void;
   onPinSetupRequired?: (response: any) => void;
   onForgotPassword?: () => void;
-  onOTPRequired?: (data: { 
-    username: string; 
+  onOTPRequired?: (data: {
+    username: string;
+    phoneNumber?: string;
+    credentials: {
+      username: string;
+      password: string;
+      cachedUsername: string;
+      isReturningUser: boolean;
+    };
+  }) => void;
+  onProfileCompletionRequired?: (data: {
+    username: string;
     phoneNumber?: string;
     credentials: {
       username: string;
@@ -48,13 +72,14 @@ export function InitialLoginScreen({
   onPasswordChangeRequired,
   onPinSetupRequired,
   onForgotPassword,
-  onOTPRequired
+  onOTPRequired,
+  onProfileCompletionRequired,
 }: InitialLoginScreenProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [cachedUsername, setCachedUsername] = useState('');
+  const [cachedUsername, setCachedUsername] = useState("");
   const [isReturningUser, setIsReturningUser] = useState(false);
   const [hasTriggeredBiometric, setHasTriggeredBiometric] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
@@ -69,7 +94,7 @@ export function InitialLoginScreen({
 
   // Track component mounted state to prevent updates after unmount
   const isMountedRef = useRef(true);
-  
+
   // Initialize biometric authentication
   const {
     isAvailable: biometricAvailable,
@@ -78,19 +103,20 @@ export function InitialLoginScreen({
     isNative,
     storePasswordSecurely,
     getStoredPassword,
-    removeStoredPassword
+    removeStoredPassword,
   } = useBiometricAuth();
 
   // ============ Get Override Handlers ============
-  const overrides = getOverridesForComponent('InitialLoginScreen') as
-    typeof import('../api/services/login.service');
+  const overrides = getOverridesForComponent(
+    "InitialLoginScreen",
+  ) as typeof import("../api/services/login.service");
 
   // ============ Event Handlers (Check for Overrides Inside) ============
 
   const handleLoginSubmit = async () => {
     // Prevent simultaneous authentication attempts
     if (isLoading) {
-//       console.log('⚠️ Login already in progress, ignoring duplicate request');
+      //       console.log('⚠️ Login already in progress, ignoring duplicate request');
       return;
     }
 
@@ -98,7 +124,7 @@ export function InitialLoginScreen({
       username,
       password,
       cachedUsername,
-      isReturningUser
+      isReturningUser,
     };
 
     // Mark that we've attempted authentication (prevents auto-biometric race)
@@ -114,31 +140,35 @@ export function InitialLoginScreen({
           { storePasswordSecurely },
           onPasswordChangeRequired,
           onPinSetupRequired,
-          onOTPRequired
+          onOTPRequired,
+          onProfileCompletionRequired,
         );
         return;
       } catch (error) {
         // Extract error message from error object
         const apiError = error as any;
         const errorData = apiError?.data || apiError?.response?.data;
-        const errorMsg = apiError?.message || '';
-        
+        const errorMsg = apiError?.message || "";
+
         // Use error.data if available (contains actual API error message)
-        let errorMessage = 'Unknown error';
-        if (errorData && typeof errorData === 'string') {
+        let errorMessage = "Unknown error";
+        if (errorData && typeof errorData === "string") {
           errorMessage = errorData;
-        } else if (errorData?.message && typeof errorData.message === 'string') {
+        } else if (
+          errorData?.message &&
+          typeof errorData.message === "string"
+        ) {
           errorMessage = errorData.message;
-        } else if (errorData?.data && typeof errorData.data === 'string') {
+        } else if (errorData?.data && typeof errorData.data === "string") {
           errorMessage = errorData.data;
         } else if (error instanceof Error) {
           errorMessage = errorMsg || error.message;
         }
-        
-//         console.log('🔄 API Override failed, falling back to mock implementation:', errorMessage);
+
+        //         console.log('🔄 API Override failed, falling back to mock implementation:', errorMessage);
         // Show error toast instead of alert
-        toast.error('Login Failed', {
-          description: errorMessage
+        toast.error("Login Failed", {
+          description: errorMessage,
         });
         setIsLoading(false);
         // Fall through to original implementation below
@@ -170,7 +200,7 @@ export function InitialLoginScreen({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleLoginSubmit();
     }
   };
@@ -181,8 +211,13 @@ export function InitialLoginScreen({
     setUsername(newUsername);
 
     // Detect user switching: if user is marked as returning but typed username differs from cached
-    if (isReturningUser && cachedUsername && newUsername && newUsername.trim() !== cachedUsername.trim()) {
-//       console.log('🔄 User switching detected: cached =', sanitizeForLog(cachedUsername), ', typed =', sanitizeForLog(newUsername));
+    if (
+      isReturningUser &&
+      cachedUsername &&
+      newUsername &&
+      newUsername.trim() !== cachedUsername.trim()
+    ) {
+      //       console.log('🔄 User switching detected: cached =', sanitizeForLog(cachedUsername), ', typed =', sanitizeForLog(newUsername));
 
       // User is trying to login as a different user - reset returning user state
       setIsReturningUser(false);
@@ -196,9 +231,9 @@ export function InitialLoginScreen({
       setHasTriggeredBiometric(false);
       hasAttemptedAutoTrigger.current = false;
 
-      toast.info('Switching Users', {
+      toast.info("Switching Users", {
         description: `Logging in as ${newUsername}`,
-        duration: 2000
+        duration: 2000,
       });
     }
   };
@@ -209,51 +244,50 @@ export function InitialLoginScreen({
       try {
         await overrides.handleUserSwitch(() => {
           // Clear local state after override cleanup
-          setCachedUsername('');
-          setUsername('');
-          setPassword('');
+          setCachedUsername("");
+          setUsername("");
+          setPassword("");
           setIsReturningUser(false);
           setHasTriggeredBiometric(false); // Reset for next user
           hasAttemptedAutoTrigger.current = false; // Reset ref for next user
         });
         return;
       } catch (error) {
-//         console.error('Override handleUserSwitch failed:', error);
+        //         console.error('Override handleUserSwitch failed:', error);
         // Fall through to original implementation
       }
     }
 
     // Original implementation (fallback)
     removeUsername();
-    setCachedUsername('');
-    setUsername('');
-    setPassword('');
+    setCachedUsername("");
+    setUsername("");
+    setPassword("");
     setIsReturningUser(false);
     setHasTriggeredBiometric(false); // Reset for next user
     hasAttemptedAutoTrigger.current = false; // Reset ref for next user
   };
 
-
   const handleBiometricAuthentication = async () => {
     //alert('Biometric Authentication');
-//     console.log('🔐 [BIOMETRIC] Authentication started', {
-//       isLoading,
-//       isNative,
-//       biometricAvailable,
-//       cachedUsername,
-//       hasTriggeredBiometric,
-//       timestamp: new Date().toISOString()
-//     });
+    //     console.log('🔐 [BIOMETRIC] Authentication started', {
+    //       isLoading,
+    //       isNative,
+    //       biometricAvailable,
+    //       cachedUsername,
+    //       hasTriggeredBiometric,
+    //       timestamp: new Date().toISOString()
+    //     });
 
     // Check if component is still mounted
     if (!isMountedRef.current) {
-//       console.log('⚠️ Component unmounted, aborting biometric authentication');
+      //       console.log('⚠️ Component unmounted, aborting biometric authentication');
       return;
     }
 
     // Prevent simultaneous authentication attempts
     if (isLoading) {
-//       console.log('⚠️ Authentication already in progress, ignoring duplicate biometric request');
+      //       console.log('⚠️ Authentication already in progress, ignoring duplicate biometric request');
       return;
     }
 
@@ -262,9 +296,10 @@ export function InitialLoginScreen({
     const timeoutId = setTimeout(() => {
       if (isMountedRef.current && !hasTimedOut) {
         hasTimedOut = true;
-//         console.log('⏰ Biometric authentication timed out');
-        toast.error('Authentication Timeout', {
-          description: 'Biometric authentication took too long. Please try again.'
+        //         console.log('⏰ Biometric authentication timed out');
+        toast.error("Authentication Timeout", {
+          description:
+            "Biometric authentication took too long. Please try again.",
         });
         setIsLoading(false);
         setHasTriggeredBiometric(false);
@@ -295,10 +330,10 @@ export function InitialLoginScreen({
             isNative,
             getStoredPassword,
             removeStoredPassword,
-            storePasswordSecurely
+            storePasswordSecurely,
           },
           setIsLoading,
-          setHasTriggeredBiometric
+          setHasTriggeredBiometric,
         );
         return;
       } catch (error) {
@@ -309,11 +344,10 @@ export function InitialLoginScreen({
       }
     } else {
       // If no override available, show error
-      toast.error('Biometric authentication not configured');
+      toast.error("Biometric authentication not configured");
       setHasTriggeredBiometric(false);
     }
   };
-
 
   // ============ Load Cached Username on Mount ============
   useEffect(() => {
@@ -342,9 +376,9 @@ export function InitialLoginScreen({
   useEffect(() => {
     // Simple conditions: if cached username exists and biometric is available, try to authenticate once
     if (
-      cachedUsername && 
+      cachedUsername &&
       isReturningUser &&
-      biometricAvailable && 
+      biometricAvailable &&
       isNative &&
       !isLoading &&
       !hasAttemptedAutoTrigger.current
@@ -390,7 +424,7 @@ export function InitialLoginScreen({
     isMountedRef.current = true;
     return () => {
       isMountedRef.current = false;
-//       console.log('🚀 [INIT] Component unmounting, cleanup complete');
+      //       console.log('🚀 [INIT] Component unmounting, cleanup complete');
     };
   }, []);
 
@@ -413,9 +447,6 @@ export function InitialLoginScreen({
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative">
-      
-
-      
       {onBack && (
         <div className="flex items-center p-6">
           <Button
@@ -429,10 +460,7 @@ export function InitialLoginScreen({
         </div>
       )}
 
-      
       <div className="flex-1 flex flex-col justify-center px-6 py-4 max-w-md mx-auto w-full space-y-5">
-
-      
         <div className="flex justify-center">
           <motion.div
             className="bg-white rounded-3xl p-3 border border-gray-100"
@@ -440,29 +468,32 @@ export function InitialLoginScreen({
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.8,
-              ease: [0.25, 0.1, 0.25, 1.0]
+              ease: [0.25, 0.1, 0.25, 1.0],
             }}
           >
             <img
-              src={'/vite.svg'}
+              src={"/vite.svg"}
               alt="Logo"
               className="h-20 w-auto object-contain"
             />
           </motion.div>
         </div>
 
-        
         <div className="text-center">
           <div className="flex items-center justify-center bg-gray-50/50 rounded-xl py-3 px-4 border border-gray-100 relative">
             <div className="text-center">
               <h1 className="text-lg text-gray-900 font-semibold tracking-tight">
-                {isReturningUser ? `Welcome ${cachedUsername}` : 'Habitera Login'}
+                {isReturningUser
+                  ? `Welcome ${cachedUsername}`
+                  : "Habitera Login"}
               </h1>
               <p className="text-xs text-gray-600 font-medium mt-0.5">
-                {isReturningUser ? 'Habitera Account' : 'Welcome to the mock Business App'}
+                {isReturningUser
+                  ? "Habitera Account"
+                  : "Welcome to the mock Business App"}
               </p>
             </div>
-            
+
             {isReturningUser && (
               <Button
                 variant="ghost"
@@ -470,88 +501,92 @@ export function InitialLoginScreen({
                 onClick={handleUserSwitch}
                 className="absolute right-3 text-gray-500 hover:text-primary hover:bg-primary/5 p-2 h-auto rounded-lg transition-all duration-200"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
               </Button>
             )}
           </div>
         </div>
 
-        
         <div className="space-y-4">
-            <div className="bg-gray-50/50 rounded-2xl p-4 space-y-3">
-         
-              {!isReturningUser && (
-                <div>
-                  <FloatingLabelInput
-                    type="text"
-                    value={username}
-                    onChange={handleUsernameChange}
-                    onKeyPress={handleKeyPress}
-                    label="Username"
-                    style={{ fontSize: '16px' }}
-                  />
-                </div>
-              )}
-
-              
-              <div className="relative">
+          <div className="bg-gray-50/50 rounded-2xl p-4 space-y-3">
+            {!isReturningUser && (
+              <div>
                 <FloatingLabelInput
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="text"
+                  value={username}
+                  onChange={handleUsernameChange}
                   onKeyPress={handleKeyPress}
-                  label="Password"
-                  className="pr-12"
-                  style={{ fontSize: '16px' }}
+                  label="Username"
+                  style={{ fontSize: "16px" }}
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary hover:bg-primary/5 p-2 h-auto rounded-lg transition-all duration-200"
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
-                </Button>
               </div>
+            )}
 
-              
-              <div className="text-right pt-1">
-                <Button
-                  variant="ghost"
-                  onClick={onForgotPassword}
-                  className="text-primary hover:text-primary/80 hover:bg-primary/5 p-0 h-auto font-semibold underline-offset-4 hover:underline text-sm"
-                  disabled={isLoading}
-                >
-                  Forgot Password?
-                </Button>
-              </div>
+            <div className="relative">
+              <FloatingLabelInput
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
+                label="Password"
+                className="pr-12"
+                style={{ fontSize: "16px" }}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary hover:bg-primary/5 p-2 h-auto rounded-lg transition-all duration-200"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </Button>
             </div>
 
-           
-            <Button
-              onClick={handleLoginSubmit}
-              disabled={isLoading || !isFormValid()}
-              className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white font-bold rounded-xl disabled:opacity-50 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] min-h-[52px] h-14"
-            >
-              {isLoading ? (
-                <div className="flex items-center space-x-3">
-                  <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Signing You In...</span>
-                </div>
-              ) : (
-                <span>Login</span>
-              )}
-            </Button>
+            <div className="text-right pt-1">
+              <Button
+                variant="ghost"
+                onClick={onForgotPassword}
+                className="text-primary hover:text-primary/80 hover:bg-primary/5 p-0 h-auto font-semibold underline-offset-4 hover:underline text-sm"
+                disabled={isLoading}
+              >
+                Forgot Password?
+              </Button>
+            </div>
+          </div>
 
-          
-            {/* {onCreateProfile && (
+          <Button
+            onClick={handleLoginSubmit}
+            disabled={isLoading || !isFormValid()}
+            className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white font-bold rounded-xl disabled:opacity-50 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] min-h-[52px] h-14"
+          >
+            {isLoading ? (
+              <div className="flex items-center space-x-3">
+                <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Signing You In...</span>
+              </div>
+            ) : (
+              <span>Login</span>
+            )}
+          </Button>
+
+          {/* {onCreateProfile && (
               <div className="text-center pt-2">
                 <span className="text-gray-500 text-sm">Don't have a Habitera profile? </span>
                 <Button
@@ -564,12 +599,12 @@ export function InitialLoginScreen({
                 </Button>
               </div>
             )} */}
-           
         </div>
 
-        
         <div className="text-center bg-gray-50 rounded-xl p-4 border border-gray-100">
-          <span className="text-gray-700 font-medium text-sm">New to Habitera? </span>
+          <span className="text-gray-700 font-medium text-sm">
+            New to Habitera?{" "}
+          </span>
           <Button
             variant="ghost"
             onClick={handleSignUpClick}
@@ -579,70 +614,80 @@ export function InitialLoginScreen({
           </Button>
         </div>
 
-        
-        {isReturningUser && biometricAvailable && <div className="flex flex-col items-center ">
-          <motion.div
-            className="relative mb-3"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 1.0,
-              delay: 0.4,
-              ease: [0.25, 0.1, 0.25, 1.0]
-            }}
-          >
-            {/* Compact animated rings */}
-            <div className="absolute inset-0 w-20 h-20 rounded-full bg-primary/8 animate-pulse"></div>
-            <div className="absolute inset-1 w-18 h-18 rounded-full bg-primary/4 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+        {isReturningUser && biometricAvailable && (
+          <div className="flex flex-col items-center ">
+            <motion.div
+              className="relative mb-3"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 1.0,
+                delay: 0.4,
+                ease: [0.25, 0.1, 0.25, 1.0],
+              }}
+            >
+              {/* Compact animated rings */}
+              <div className="absolute inset-0 w-20 h-20 rounded-full bg-primary/8 animate-pulse"></div>
+              <div
+                className="absolute inset-1 w-18 h-18 rounded-full bg-primary/4 animate-pulse"
+                style={{ animationDelay: "0.4s" }}
+              ></div>
+
+              <motion.div
+                animate={
+                  isReturningUser
+                    ? {
+                        y: [0, -8, 0],
+                      }
+                    : {}
+                }
+                transition={
+                  isReturningUser
+                    ? {
+                        duration: 2.0,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        repeatDelay: 1.5,
+                      }
+                    : {}
+                }
+              >
+                <Button
+                  onClick={
+                    isReturningUser ? handleBiometricAuthentication : () => {}
+                  }
+                  disabled={isLoading || !isReturningUser}
+                  className="w-20 h-20 bg-gradient-to-br from-primary via-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 disabled:from-gray-300 disabled:to-gray-200 rounded-full flex items-center justify-center transition-all duration-300 relative z-10 hover:scale-105 shadow-md"
+                >
+                  <Fingerprint className="w-8 h-8 text-white" />
+                </Button>
+              </motion.div>
+            </motion.div>
 
             <motion.div
-              animate={isReturningUser ? {
-                y: [0, -8, 0],
-              } : {}}
-              transition={isReturningUser ? {
-                duration: 2.0,
-                ease: "easeInOut",
-                repeat: Infinity,
-                repeatDelay: 1.5,
-              } : {}}
+              className="text-center bg-gray-50 rounded-lg px-4 py-2 border border-gray-100"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.6,
+                ease: [0.25, 0.1, 0.25, 1.0],
+              }}
             >
-              <Button
-                onClick={isReturningUser ? handleBiometricAuthentication : () => {}}
-                disabled={isLoading || !isReturningUser}
-                className="w-20 h-20 bg-gradient-to-br from-primary via-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 disabled:from-gray-300 disabled:to-gray-200 rounded-full flex items-center justify-center transition-all duration-300 relative z-10 hover:scale-105 shadow-md"
-              >
-                <Fingerprint className="w-8 h-8 text-white" />
-              </Button>
+              <p className="font-bold text-gray-800 text-xs">
+                {isReturningUser ? "Touch ID" : "Biometric Security"}
+              </p>
+              <p className="text-xs text-gray-600 font-medium">
+                {isReturningUser
+                  ? "Tap for quick access"
+                  : "Available after login"}
+              </p>
             </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="text-center bg-gray-50 rounded-lg px-4 py-2 border border-gray-100"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.6,
-              ease: [0.25, 0.1, 0.25, 1.0]
-            }}
-          >
-            <p className="font-bold text-gray-800 text-xs">
-              {isReturningUser ? 'Touch ID' : 'Biometric Security'}
-            </p>
-            <p className="text-xs text-gray-600 font-medium">
-              {isReturningUser
-                ? 'Tap for quick access'
-                : 'Available after login'
-              }
-            </p>
-          </motion.div>
-        </div>}
-
+          </div>
+        )}
       </div>
 
-      
       <div className="px-6 pb-4 pt-2">
-   
         <div className="flex justify-center mb-2">
           <button
             onClick={() => {
@@ -662,14 +707,12 @@ export function InitialLoginScreen({
         </p>
       </div>
 
-     
       <Sheet open={showPrivacyPolicy} onOpenChange={setShowPrivacyPolicy}>
         <SheetContent
           side="bottom"
           className="bg-white rounded-t-3xl border-0 h-[90vh] p-0 flex flex-col"
           aria-describedby={undefined}
         >
-       
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <SheetHeader className="flex-1">
               <SheetTitle className="text-center text-gray-900 text-base font-semibold">
@@ -686,13 +729,14 @@ export function InitialLoginScreen({
             </Button>
           </div>
 
-          
           <div className="flex-1 relative overflow-hidden">
             {/* Loading Overlay */}
             {privacyPolicyLoading && (
               <div className="absolute inset-0 bg-white flex flex-col items-center justify-center z-10">
                 <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
-                <p className="text-sm text-gray-500">Loading Privacy Policy...</p>
+                <p className="text-sm text-gray-500">
+                  Loading Privacy Policy...
+                </p>
               </div>
             )}
 
@@ -706,7 +750,6 @@ export function InitialLoginScreen({
             />
           </div>
 
-          
           <div className="px-4 py-3 border-t border-gray-100 bg-gray-50">
             <a
               href="https://www.accessbankplc.com/privacy-policy"
@@ -733,14 +776,12 @@ export function InitialLoginScreen({
         </SheetContent>
       </Sheet>
 
-      
       <Sheet open={showNdprConsent} onOpenChange={setShowNdprConsent}>
         <SheetContent
           side="bottom"
           className="bg-white rounded-t-3xl border-0 h-[85vh] p-0 flex flex-col"
           aria-describedby={undefined}
         >
-     
           <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
             <SheetHeader className="flex-1">
               <SheetTitle className="text-center text-gray-900 text-lg font-bold">
@@ -773,19 +814,30 @@ export function InitialLoginScreen({
               </h3>
 
               <p className="text-sm text-gray-700 leading-relaxed">
-                Before you proceed with creating your Access Bank SME account, we need your consent to collect, process, and store your personal data in accordance with the Nigeria Data Protection Regulation (NDPR) 2019.
+                Before you proceed with creating your Access Bank SME account,
+                we need your consent to collect, process, and store your
+                personal data in accordance with the Nigeria Data Protection
+                Regulation (NDPR) 2019.
               </p>
 
               <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-                <h4 className="font-semibold text-gray-900 text-sm">We will collect and process:</h4>
+                <h4 className="font-semibold text-gray-900 text-sm">
+                  We will collect and process:
+                </h4>
                 <ul className="space-y-2 text-sm text-gray-700">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>Personal identification information (BVN, NIN, name, date of birth)</span>
+                    <span>
+                      Personal identification information (BVN, NIN, name, date
+                      of birth)
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>Business information (registration details, ownership structure)</span>
+                    <span>
+                      Business information (registration details, ownership
+                      structure)
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
@@ -793,21 +845,32 @@ export function InitialLoginScreen({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>Financial information (turnover estimates, transaction data)</span>
+                    <span>
+                      Financial information (turnover estimates, transaction
+                      data)
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>Biometric data (facial recognition for liveness verification)</span>
+                    <span>
+                      Biometric data (facial recognition for liveness
+                      verification)
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>Supporting documents (CAC certificate, utility bills, ID documents)</span>
+                    <span>
+                      Supporting documents (CAC certificate, utility bills, ID
+                      documents)
+                    </span>
                   </li>
                 </ul>
               </div>
 
               <div className="bg-primary/5 rounded-xl p-4 space-y-2">
-                <h4 className="font-semibold text-gray-900 text-sm">Your data will be used for:</h4>
+                <h4 className="font-semibold text-gray-900 text-sm">
+                  Your data will be used for:
+                </h4>
                 <ul className="space-y-2 text-sm text-gray-700">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
@@ -819,7 +882,9 @@ export function InitialLoginScreen({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    <span>Regulatory reporting to CBN, FIRS, and other authorities</span>
+                    <span>
+                      Regulatory reporting to CBN, FIRS, and other authorities
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
@@ -833,14 +898,25 @@ export function InitialLoginScreen({
               </div>
 
               <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-                <h4 className="font-semibold text-gray-900 text-sm">Your Rights:</h4>
+                <h4 className="font-semibold text-gray-900 text-sm">
+                  Your Rights:
+                </h4>
                 <p className="text-sm text-gray-700 leading-relaxed">
-                  You have the right to access, correct, or delete your personal data. You can withdraw consent at any time, subject to legal and contractual restrictions. For data privacy concerns, contact our Data Protection Officer at <span className="font-semibold text-primary">dpo@accessbankplc.com</span>
+                  You have the right to access, correct, or delete your personal
+                  data. You can withdraw consent at any time, subject to legal
+                  and contractual restrictions. For data privacy concerns,
+                  contact our Data Protection Officer at{" "}
+                  <span className="font-semibold text-primary">
+                    dpo@accessbankplc.com
+                  </span>
                 </p>
               </div>
 
               <p className="text-xs text-gray-600 leading-relaxed">
-                By clicking "I Accept", you acknowledge that you have read and understood this notice and consent to the collection, processing, and storage of your personal data as described above.
+                By clicking "I Accept", you acknowledge that you have read and
+                understood this notice and consent to the collection,
+                processing, and storage of your personal data as described
+                above.
               </p>
             </div>
           </div>
@@ -853,10 +929,12 @@ export function InitialLoginScreen({
                 checked={ndprConsentAccepted}
                 onChange={(e) => setNdprConsentAccepted(e.target.checked)}
                 className="mt-0.5 w-6 h-6 min-w-[24px] rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-                style={{ accentColor: '#003883' }}
+                style={{ accentColor: "#003883" }}
               />
               <span className="text-sm text-gray-700 font-medium">
-                I consent to the collection, processing, and storage of my personal data in accordance with the Nigeria Data Protection Regulation (NDPR)
+                I consent to the collection, processing, and storage of my
+                personal data in accordance with the Nigeria Data Protection
+                Regulation (NDPR)
               </span>
             </label>
 
