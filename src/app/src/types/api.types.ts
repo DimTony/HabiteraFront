@@ -51,6 +51,8 @@ export interface LoginUserData {
   updatedAt: string;
   lastLoginAt: string;
   email: string;
+  profileCompleted: boolean;
+  profileCompletedAt: string;
   // firstName: string | null;
   // lastName: string | null;
   // city: string | null;
@@ -103,7 +105,7 @@ export interface LoginResponse {
   statusCode: number;
   token: string;
   refreshToken: string;
-  profileComplete: boolean;
+  // profileComplete: boolean;
   user: {
     id: string;
     email: string;
@@ -113,6 +115,8 @@ export interface LoginResponse {
     createdAt: string;
     updatedAt: string;
     lastLoginAt: string;
+    profileCompleted?: boolean;
+    profileCompletedAt: string | null;
   };
 }
 

@@ -235,6 +235,16 @@ export const handleLoginSubmit = async (
       isReturningUser: boolean;
     };
   }) => void,
+  onProfileCompletionRequired?: (data: {
+    // Add this parameter
+    username: string;
+    credentials: {
+      username: string;
+      password: string;
+      cachedUsername: string;
+      isReturningUser: boolean;
+    };
+  }) => void,
 ) => {
   // console.log('🔥 API Override: handleLoginSubmit called with:', formData);
   const finalUsername = formData.isReturningUser
@@ -280,7 +290,7 @@ export const handleLoginSubmit = async (
     // Execute the API call directly
     const response: LoginResponse = await loginUser(loginRequest);
 
-    console.log('APIIII', response)
+    console.log("APIIII", response);
 
     // 🔐 CHECK FOR OTP REQUIREMENT (device ID change - responseCode "01")
     // if (response.otpRequired === true && response.responseCode === "01") {
@@ -318,6 +328,23 @@ export const handleLoginSubmit = async (
     // Type assertion for actual API response structure
     const apiUser = response.user as any;
 
+    if (apiUser.profileCompleted === false) {
+      console.log(
+        "⚠️ Profile completion required - redirecting to profile completion screen",
+      );
+      setIsLoading(false);
+      onProfileCompletionRequired?.({
+        username: finalUsername,
+        credentials: {
+          username: formData.username,
+          password: formData.password,
+          cachedUsername: formData.cachedUsername,
+          isReturningUser: formData.isReturningUser,
+        },
+      });
+      return;
+    }
+
     // 🔍 DIAGNOSTIC LOGGING - Check what we received
     // console.log('🔍 [LOGIN] Response received:', {
     //   storedId: apiUser.storedId,
@@ -340,8 +367,7 @@ export const handleLoginSubmit = async (
         apiUser.userType ||
         (apiUser.role === "BusinessOwner" ? "BusinessOwner" : "Staff"),
       status: apiUser.status || "Active",
-      role:
-        apiUser.role,
+      role: apiUser.role,
       storeId: apiUser.storedId || null, // Store ID for staff members (from API field 'storedId')
       accountType: apiUser.accountType || null, // Account type (e.g., "CORP", "IND")
       profilePhoto: apiUser.profilePhoto || null,
@@ -374,9 +400,9 @@ export const handleLoginSubmit = async (
 
         // Set store account as default selected account
         if (storeDetails?.storeAccountNumber) {
-        //   const { setSelectedAccountId, getSelectedAccountId } = await import(
-        //     "../../storage"
-        //   );
+          //   const { setSelectedAccountId, getSelectedAccountId } = await import(
+          //     "../../storage"
+          //   );
           setSelectedAccountId(storeDetails.storeAccountNumber);
 
           // Verify it was saved correctly
@@ -471,7 +497,6 @@ export const handleLoginSubmit = async (
     const errorStatus = apiError?.status || apiError?.response?.status;
     const errorMsg = apiError?.message || "";
 
-  
     // Check HTTP status first
     if (errorStatus === 500 || errorStatus === 502 || errorStatus === 503) {
       errorMessage = "Something went wrong. Please try again later";

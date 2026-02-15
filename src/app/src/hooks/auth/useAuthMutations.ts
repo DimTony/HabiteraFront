@@ -145,7 +145,7 @@ export const loginUser = async (
     statusCode: response.data.statusCode,
     token: response.data.data.token,
     refreshToken: response.data.data.refreshToken,
-    profileComplete: false,
+    // profileComplete: false,
     user: {
       id: apiData.user.id,
       email: apiData.user.email,
@@ -155,6 +155,8 @@ export const loginUser = async (
       createdAt: apiData.user.createdAt,
       updatedAt: apiData.user.updatedAt,
       lastLoginAt: apiData.user.lastLoginAt,
+      profileCompleted: apiData.user.profileCompleted,
+      profileCompletedAt: apiData.user.profileCompletedAt,
     },
   };
 
