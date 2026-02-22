@@ -43,6 +43,7 @@ import { OfflineErrorScreen } from "./components/OfflineErrorScreen";
 import { EntryChoiceScreen } from "./components/EntryChoiceScreen";
 import { UnregisteredBusinessChoiceScreen } from "./components/UnregisteredBusinessChoiceScreen";
 import type { Tab, UserRole } from "./types/common.types";
+import type { LoginUserData } from "./types/api.types";
 
 const Dashboard = lazy(() =>
   import("./components/Dashboard").then((module) => ({
@@ -197,18 +198,7 @@ type Screen =
   | "unregistered-business-choice"
   | "store-linking";
 
-interface StaffData {
 
-    id: string;
-    email: string;
-    profilePhoto: string;
-    role: "Agent" | "User";
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    lastLoginAt: string;
-
-}
 
 interface Transaction {
   id: string;
@@ -242,8 +232,8 @@ function AppContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [userRole, setUserRole] = useState<UserRole>("user");
-  const [staffData, setStaffData] = useState<StaffData | null>(null);
-  const staffName = useMemo(() => staffData?.email || "", [staffData]);
+  const [staffData, setStaffData] = useState<LoginUserData | null>(null);
+  const staffName = useMemo(() => staffData?.firstName || staffData?.email || "", [staffData]);
   const [forgotPasswordUsername, setForgotPasswordUsername] = useState("");
   const [selectedBusinessTools, setSelectedBusinessTools] = useState<string[]>(
     () => {
@@ -291,12 +281,17 @@ function AppContent() {
           lastLoginAt: user.lastLoginAt,
           updatedAt: user.updatedAt,
           email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          fullName: user.fullName,
+          phoneNumber: user.phoneNumber,
+          profileCompleted: user.profileCompleted,
+          profileCompletedAt: user.profileCompletedAt,
           status: user.status,
         });
       }
     }
   }, [isAuthenticated]);
-
 
   useEffect(() => {
     setBusinessToolsConfig({
@@ -316,7 +311,6 @@ function AppContent() {
     enabled: isAuthenticated, // Only track when authenticated
   });
 
- 
   let handleInitialLogin = async (credentials: {
     identifier: string;
     password: string;
@@ -336,10 +330,10 @@ function AppContent() {
 
       if (storeUser && storeIsAuthenticated) {
         // SECURITY FIX: CWE-117 - Sanitize user data before logging
-        // console.log(
-        //   "✅ BIOMETRIC LOGIN - Using Zustand auth store:",
-        //   sanitizeForLog(JSON.stringify(storeUser))
-        // );
+        console.log(
+          "✅ BIOMETRIC LOGIN - Using Zustand auth store:",
+          JSON.stringify(storeUser)
+        );
 
         const mappedRole = getUserRole();
         const position = getPosition();
@@ -354,6 +348,12 @@ function AppContent() {
           lastLoginAt: storeUser.lastLoginAt,
           updatedAt: storeUser.updatedAt,
           email: storeUser.email,
+          firstName: storeUser.firstName,
+          lastName: storeUser.lastName,
+          fullName: storeUser.fullName,
+          phoneNumber: storeUser.phoneNumber,
+          profileCompleted: storeUser.profileCompleted,
+          profileCompletedAt: storeUser.profileCompletedAt,
           status: storeUser.status,
         });
         setCurrentKYCTier(1);
@@ -417,10 +417,10 @@ function AppContent() {
     // If we have user data in Zustand store, use it
     if (storeUser && storeToken && storeIsAuthenticated) {
       // SECURITY FIX: CWE-117 - Sanitize user data before logging
-      // console.log(
-      //   "✅ API LOGIN SUCCESS - Using Zustand auth store:",
-      //   sanitizeForLog(JSON.stringify(storeUser))
-      // );
+      console.log(
+        "✅ API LOGIN SUCCESS - Using Zustand auth store:",
+        JSON.stringify(storeUser)
+      );
 
       const mappedRole = getUserRole();
       const position = getPosition();
@@ -435,6 +435,12 @@ function AppContent() {
         lastLoginAt: storeUser.lastLoginAt,
         updatedAt: storeUser.updatedAt,
         email: storeUser.email,
+        firstName: storeUser.firstName,
+        lastName: storeUser.lastName,
+        fullName: storeUser.fullName,
+        phoneNumber: storeUser.phoneNumber,
+        profileCompleted: storeUser.profileCompleted,
+        profileCompletedAt: storeUser.profileCompletedAt,
         status: storeUser.status,
       });
       setCurrentKYCTier(1);
@@ -503,7 +509,7 @@ function AppContent() {
     };
   }) => {
     startTransition(() => {
-      // Navigate to profile completion screen
+       setIsAuthenticated(true);
       setCurrentScreen("complete-profile");
 
       console.log(
@@ -512,12 +518,10 @@ function AppContent() {
     });
   };
 
-  
   const isBusinessOwner = () => {
     return userRole === "agent";
   };
 
-  
   const navigateToScreen = (screen: Screen, tab?: Tab) => {
     startTransition(() => {
       // Push current state to history before navigating
@@ -535,7 +539,6 @@ function AppContent() {
     });
   };
 
-  
   const navigateBack = () => {
     startTransition(() => {
       if (navigationHistory.length > 0) {
@@ -563,7 +566,6 @@ function AppContent() {
       setIsAuthenticated(true);
       // setCurrentScreen("first-login-password-change");
       setCurrentScreen("add-property");
-      
 
       console.log(
         "🔐 Password change required - navigating to password change screen",
@@ -579,11 +581,9 @@ function AppContent() {
       // setCurrentScreen("first-login-pin-setup");
       setCurrentScreen("add-property");
 
-
       console.log("🔐 PIN setup required - navigating to PIN setup screen");
     });
   };
-
 
   const handleOTPRequired = (data: {
     username: string;
@@ -757,7 +757,7 @@ function AppContent() {
 
       // Block back button during forced flows
       if (currentScreen === "first-login-password-change") {
-      // if (currentScreen === "first-login-password-change") {
+        // if (currentScreen === "first-login-password-change") {
         console.log("⛔ Back button blocked: Password change required");
         toast.info("Please complete your password change", {
           description: "You must set a new password to continue",
@@ -928,26 +928,23 @@ function AppContent() {
   }, []);
 
   const handleNavigateToAddProperty = () => {
-  navigateToScreen("add-property");
-};
+    navigateToScreen("add-property");
+  };
 
-const handleBackFromAddProperty = () => {
-  // Clear selected items when leaving order link screen
-  // setSelectedItemsForOrderLink([]);
-  // setInventorySelectionMode(false);
-  navigateBack();
-};
-
+  const handleBackFromAddProperty = () => {
+    // Clear selected items when leaving order link screen
+    // setSelectedItemsForOrderLink([]);
+    // setInventorySelectionMode(false);
+    navigateBack();
+  };
 
   const handleNavigateToTools = () => {
     setShowBusinessToolsModal(true);
   };
 
-
   const handleNavigateToOrders = () => {
     // navigateToScreen("orders");
     navigateToScreen("add-property");
-
   };
 
   const handleNavigateToTransactions = (accountId?: string) => {
@@ -960,13 +957,11 @@ const handleBackFromAddProperty = () => {
   const handleViewTransaction = (transaction: Transaction) => {
     // navigateToScreen("transaction-detail");
     navigateToScreen("add-property");
-
   };
 
   const handleSharePayment = () => {
     // navigateToScreen("share-payment");
     navigateToScreen("add-property");
-
   };
 
   const handleBackToInitialLogin = () => {
@@ -979,12 +974,10 @@ const handleBackFromAddProperty = () => {
     // Load products when navigating
     // navigateToScreen("product-list");
     navigateToScreen("add-property");
-
   };
   const handleNavigateToAddProduct = () => {
     // navigateToScreen("add-product");
     navigateToScreen("add-property");
-
   };
   const handleNavigateToStoreSetup = () => {
     navigateToScreen("add-property");
@@ -1085,12 +1078,10 @@ const handleBackFromAddProperty = () => {
     });
   };
 
-
   const handleSignUpFromLogin = () => {
     startTransition(() => {
       // setCurrentScreen("entry-choice");
       setCurrentScreen("add-property");
-
     });
   };
 
@@ -1143,6 +1134,38 @@ const handleBackFromAddProperty = () => {
     );
   }
 
+  if (currentScreen === "complete-profile") {
+    return (
+      <div className="min-h-screen bg-background overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key="complete-profile"
+            variants={screenVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={slideTransition}
+            className="absolute inset-0"
+          >
+            <Suspense fallback={<LoadingSpinner />}>
+              <CompleteProfileScreen
+                onBack={handleBackToInitialLogin}
+                userRole={userRole}
+                staffData={staffData}
+                onComplete={() => {
+                  // After profile completion, redirect to dashboard
+                  setIsAuthenticated(true);
+                  setCurrentScreen("dashboard");
+                }}
+              />
+            </Suspense>
+          </motion.div>
+        </AnimatePresence>
+        <Toaster />
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="mobile-screen bg-background overflow-hidden">
@@ -1171,6 +1194,7 @@ const handleBackFromAddProperty = () => {
                   // setCurrentScreen("forgot-password");
                 }}
                 onOTPRequired={handleOTPRequired}
+                onProfileCompletionRequired={handleProfileCompletionRequired}
                 // onNavigateToOrderLink={handleNavigateToOrderLinkPaymentFromLogin}
                 // onNavigateToPaymentLink={handleNavigateToPaymentLinkCustomerFromLogin}
               />
@@ -1445,34 +1469,6 @@ const handleBackFromAddProperty = () => {
       </div>
     );
   }
-
-   if (currentScreen === "complete-profile") {
-     return (
-       <div className="min-h-screen bg-background overflow-hidden">
-         <AnimatePresence mode="wait">
-           <motion.div
-             key="your-new-screen-name"
-             variants={screenVariants}
-             initial="enter"
-             animate="center"
-             exit="exit"
-             transition={slideTransition}
-             className="absolute inset-0"
-           >
-             <Suspense fallback={<LoadingSpinner />}>
-               <CompleteProfileScreen
-                 onBack={handleBackFromAddProperty}
-                 // Add other props as needed
-                 // staffData={staffData}
-                 userRole={userRole}
-               />
-             </Suspense>
-           </motion.div>
-         </AnimatePresence>
-         <Toaster />
-       </div>
-     );
-   }
 
   return (
     <div className="mobile-screen bg-background flex flex-col">

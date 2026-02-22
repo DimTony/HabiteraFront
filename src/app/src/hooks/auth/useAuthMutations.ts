@@ -149,8 +149,12 @@ export const loginUser = async (
     user: {
       id: apiData.user.id,
       email: apiData.user.email,
+      firstName: apiData.user.firstName,
+      lastName: apiData.user.lastName,
+      fullName: apiData.user.fullName,
+      phoneNumber: apiData.user.phoneNumber,
       profilePhoto: apiData.user.profilePhoto,
-      role: apiData.user.userType,
+      role: apiData.user.role,
       status: apiData.user.status,
       createdAt: apiData.user.createdAt,
       updatedAt: apiData.user.updatedAt,

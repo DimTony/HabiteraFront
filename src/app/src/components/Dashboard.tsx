@@ -30,22 +30,12 @@ import { useAuthStore } from "../stores/useAuthStore";
 import { toast } from "sonner";
 import { useSafeArea } from "../hooks/useSafeAreaView";
 import { useNotificationCount } from "../hooks/useNotificationCount";
+import type { LoginUserData } from "../types/api.types";
 // import { useSafeArea } from '../services/useSafeArea';
-
-interface StaffData {
-  id: string;
-  email: string;
-  profilePhoto: string;
-  role: "Agent" | "User";
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  lastLoginAt: string;
-}
 
 interface DashboardProps {
   staffName: string;
-  staffData?: StaffData | null;
+  staffData?: LoginUserData | null;
   selectedBusinessTools?: string[];
   transactionRefreshKey?: number;
   userPhoneNumber?: string;
@@ -403,8 +393,8 @@ export function Dashboard({
             {/* Avatar */}
             <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
               <img
-                src={staffData?.profilePhoto || "/assets/default-avatar.png"}
-                alt={staffData?.email || "User"}
+                src={staffData?.profilePhoto || "/User-80.svg"}
+                alt={staffData?.firstName || "User"}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -416,19 +406,19 @@ export function Dashboard({
                 {/* {isLoadingAccounts && (
                   <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin" />
                 )} */}
+                <h1 className="text-lg font-medium text-white">
+                  {staffName || staffData?.email || "User"}
+                </h1>
               </div>
 
               {/* Name */}
-              <h1 className="text-lg font-medium text-white">
-                {staffData?.email || staffName || "User"}
-              </h1>
 
               {/* Contact Info */}
               <div className="flex flex-col space-y-1 mt-2">
                 <div className="flex items-center space-x-2 text-white/70 text-xs">
                   <Mail className="w-3.5 h-3.5" />
                   <span>
-                    {staffData?.email || "ajiriogheneokeya@gmail.com"}
+                    {staffData?.email || ""}
                   </span>
                   <button className="ml-1 hover:bg-white/10 rounded p-0.5 transition-colors">
                     <ExternalLink className="w-3 h-3" />
@@ -436,7 +426,7 @@ export function Dashboard({
                 </div>
                 <div className="flex items-center space-x-2 text-white/70 text-xs">
                   <Phone className="w-3.5 h-3.5" />
-                  <span>{staffData?.email || "08012345678"}</span>
+                  <span>{staffData?.phoneNumber || ""}</span>
                   <button className="ml-1 hover:bg-white/10 rounded p-0.5 transition-colors">
                     <ExternalLink className="w-3 h-3" />
                   </button>

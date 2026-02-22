@@ -1,13 +1,21 @@
 import { toast } from "sonner";
-import secureStorage, { setUsername, setInAppToken, setAuthToken, setSelectedAccountId, getSelectedAccountId, removeFromStorage } from "../../stores/storage";
+import secureStorage, {
+  setUsername,
+  setInAppToken,
+  setAuthToken,
+  setSelectedAccountId,
+  getSelectedAccountId,
+  removeFromStorage,
+} from "../../stores/storage";
 import { useAuthStore } from "../../stores/useAuthStore";
 import type { LoginRequest, LoginResponse } from "../../types/api.types";
 import { getDeviceId } from "../../utils/deviceId";
-import { generateOTPByUsername, loginUser } from "../../hooks/auth/useAuthMutations";
+import {
+  generateOTPByUsername,
+  loginUser,
+} from "../../hooks/auth/useAuthMutations";
 import { fetchStoreById } from "../../hooks/business/useStoresQueries";
 import { isTechnicalMessage } from "../../utils/errorMessageFormatter";
-
-
 
 /**
  * Retry login with OTP after device verification
@@ -66,13 +74,16 @@ export const handleLoginWithOTP = async (
       businessId: apiUser.businessId || null,
       phone: apiUser.phone || "",
       email: apiUser.email || "",
+      firstName: apiUser.firstName || "",
+      lastName: apiUser.lastName || "",
+      phoneNumber: apiUser.phoneNumber || "",
+      profileCompletedAt: apiUser.profileCompletedAt || "",
       customerId: apiUser.customerId || null,
       userType:
         apiUser.userType ||
         (apiUser.role === "BusinessOwner" ? "BusinessOwner" : "Staff"),
       status: apiUser.status || "Active",
-      role:
-        apiUser.role,
+      role: apiUser.role,
       storeId: apiUser.storedId || null,
       profilePhoto: apiUser.profilePhoto || null,
       createdAt: apiUser.createdAt || null,
@@ -96,7 +107,7 @@ export const handleLoginWithOTP = async (
         const storeDetails = await fetchStoreById(apiUser.storedId);
 
         if (storeDetails?.storeAccountNumber) {
-        //   const { setSelectedAccountId } = await import("../../storage");
+          //   const { setSelectedAccountId } = await import("../../storage");
           setSelectedAccountId(storeDetails.storeAccountNumber);
         }
       } catch (error) {
@@ -328,23 +339,6 @@ export const handleLoginSubmit = async (
     // Type assertion for actual API response structure
     const apiUser = response.user as any;
 
-    if (apiUser.profileCompleted === false) {
-      console.log(
-        "⚠️ Profile completion required - redirecting to profile completion screen",
-      );
-      setIsLoading(false);
-      onProfileCompletionRequired?.({
-        username: finalUsername,
-        credentials: {
-          username: formData.username,
-          password: formData.password,
-          cachedUsername: formData.cachedUsername,
-          isReturningUser: formData.isReturningUser,
-        },
-      });
-      return;
-    }
-
     // 🔍 DIAGNOSTIC LOGGING - Check what we received
     // console.log('🔍 [LOGIN] Response received:', {
     //   storedId: apiUser.storedId,
@@ -362,6 +356,10 @@ export const handleLoginSubmit = async (
       businessId: apiUser.businessId || null,
       phone: apiUser.phone || "", // Fallback to empty string if undefined
       email: apiUser.email || "",
+      firstName: apiUser.firstName || "",
+      lastName: apiUser.lastName || "",
+      phoneNumber: apiUser.phoneNumber || "",
+      profileCompletedAt: apiUser.profileCompletedAt || "",
       customerId: apiUser.customerId || null, // Convert undefined to null
       userType:
         apiUser.userType ||
@@ -421,6 +419,24 @@ export const handleLoginSubmit = async (
         //         console.error('❌ [STAFF] Failed to fetch store details:', error);
         // Don't block login on store fetch failure
       }
+    }
+
+    // 🔒 CHECK FOR PROFILE COMPLETION REQUIREMENT (after auth store update)
+    if (apiUser.profileCompleted === false) {
+      console.log(
+        "⚠️ Profile completion required - redirecting to profile completion screen",
+      );
+      setIsLoading(false);
+      onProfileCompletionRequired?.({
+        username: finalUsername,
+        credentials: {
+          username: formData.username,
+          password: formData.password,
+          cachedUsername: formData.cachedUsername,
+          isReturningUser: formData.isReturningUser,
+        },
+      });
+      return;
     }
 
     // 🔒 CHECK FOR PASSWORD CHANGE REQUIREMENT (after auth store update)
@@ -680,19 +696,23 @@ export const handleBiometricAuthentication = async (
       const zustandUser = {
         id: apiUser.id,
         userName: formData.cachedUsername,
-        fullName: apiUser.name || formData.cachedUsername, // Use apiUser.name (not fullName) to match API response
+        fullName: response.user.fullName || formData.cachedUsername, // Use apiUser.name (not fullName) to match API response
         // businessId: response.user.businessId || null,
         // phone: response.user.phone || "",
         email: response.user.email || "",
+        firstName: response.user.firstName || "",
+        lastName: response.user.lastName || "",
+        phoneNumber: response.user.phoneNumber || "",
+        profileCompletedAt: response.user.profileCompletedAt || "",
         // customerId: response.user.customerId || null,
         userType: response.user.role,
         status: response.user.status,
         role: response.user.role,
-        storeId: apiUser.storedId || null, // Store ID for staff members (from API field 'storedId')
-        profilePhoto: apiUser.profilePhoto || null,
-        createdAt: apiUser.createdAt || null,
-        updatedAt: apiUser.updatedAt || null,
-        lastLoginAt: apiUser.lastLoginAt || null,
+        storeId: null, // Store ID for staff members (from API field 'storedId')
+        profilePhoto: response.user.profilePhoto || "",
+        createdAt: response.user.createdAt || "",
+        updatedAt: response.user.updatedAt || "",
+        lastLoginAt: response.user.lastLoginAt || "",
       };
 
       const { login } = useAuthStore.getState();

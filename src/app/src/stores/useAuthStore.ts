@@ -9,6 +9,7 @@ import {
   removeFromStorage,
 } from "./storage";
 import type { UserRole } from '../types/common.types';
+import type { LoginUserData } from '../types/api.types';
 
 // ==============================================
 // SECURE STORAGE ADAPTER FOR ZUSTAND
@@ -63,16 +64,6 @@ const secureStorageAdapter: StateStorage = {
 /**
  * User data from API login response
  */
-export interface User {
-  id: string;
-  email: string;
-  profilePhoto: string;
-  role: "Agent" | "User";
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  lastLoginAt: string;
-}
 
 /**
  * App-specific user role mapping
@@ -87,7 +78,7 @@ export interface User {
  */
 interface AuthState {
   // ============ STATE ============
-  user: User | null;
+  user: LoginUserData | null;
   token: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
@@ -141,7 +132,7 @@ interface AuthState {
   /**
    * Login user and store auth data
    */
-  login: (userData: User, token: string, refreshToken: string) => Promise<void>;
+  login: (userData: LoginUserData, token: string, refreshToken: string) => Promise<void>;
 
   /**
    * Logout user and clear auth data
@@ -151,7 +142,7 @@ interface AuthState {
   /**
    * Update user data (partial update)
    */
-  updateUser: (userData: Partial<User>) => void;
+  updateUser: (userData: Partial<LoginUserData>) => void;
 
   /**
    * Update token (for refresh)

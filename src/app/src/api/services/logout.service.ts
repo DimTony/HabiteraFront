@@ -28,7 +28,7 @@ export const handleAutoLogout = async (): Promise<void> => {
 
   console.log("🚪 AUTO-LOGOUT DEBUG: handleAutoLogout called", {
     userRole: userRole,
-    userType: user?.userType,
+    userType: user?.role,
     userId: user?.id,
     isLoggingOut: isLoggingOut,
     windowExists: typeof window !== "undefined",
