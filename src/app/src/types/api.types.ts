@@ -44,30 +44,20 @@ export interface UpdateStore {
 
 export interface LoginUserData {
   id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  phoneNumber: string;
   profilePhoto: string;
-  userType: "Agent" | "User";
+  role: "Agent" | "User";
   status: string;
   createdAt: string;
   updatedAt: string;
   lastLoginAt: string;
-  email: string;
-  profileCompleted: boolean;
-  profileCompletedAt: string;
-  // firstName: string | null;
-  // lastName: string | null;
-  // city: string | null;
-  // state: string | null;
-  // country: string | null;
-  // latitude: number;
-  // longitude: number;
-  // preferredLanguage: string | null;
-  // emailNotifications: boolean;
-  // pushNotifications: boolean;
-  // licenseNumber: string | null;
-  // agencyName: string | null;
-  // averageRating: string | null;
-  // totalReviews: string | null;
-}
+  profileCompleted?: boolean;
+  profileCompletedAt: string | null;
+};
 
 // Actual API response structure from POST /Login
 export interface LoginApiResponseData {
@@ -106,18 +96,7 @@ export interface LoginResponse {
   token: string;
   refreshToken: string;
   // profileComplete: boolean;
-  user: {
-    id: string;
-    email: string;
-    profilePhoto: string;
-    role: "Agent" | "User";
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    lastLoginAt: string;
-    profileCompleted?: boolean;
-    profileCompletedAt: string | null;
-  };
+  user: LoginUserData
 }
 
 // export interface LoginResponseWrapper {
@@ -139,6 +118,18 @@ export interface RegisterUserRequest {
 // ==============================================
 // Customer Account & OTP Types
 // ==============================================
+
+
+export interface CompleteProfileRequest {
+
+  // username: string;
+  // password: string;
+  deviceId: string;
+  // otp?: string; // Optional OTP for device verification
+  email: string;
+  password: string;
+
+}
 
 /**
  * Customer account data from GetCustomerAccountsByPhone endpoint

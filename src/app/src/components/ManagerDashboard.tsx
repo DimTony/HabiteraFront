@@ -8,22 +8,12 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { useListingQuery } from "../hooks/business/useListingsQueries";
+import type { LoginUserData } from "../types/api.types";
 
-
-interface StaffData {
-  id: string;
-  email: string;
-  profilePhoto: string;
-  role: "Agent" | "User";
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  lastLoginAt: string;
-}
 
 interface ManagerDashboardProps {
   staffName: string;
-  staffData?: StaffData | null;
+  staffData?: LoginUserData | null;
   currentKYCTier?: number;
   isFirstLogin?: boolean;
   selectedBusinessTools?: string[];
@@ -133,7 +123,7 @@ export function ManagerDashboard({
 
                 {/* Name */}
                 <h1 className="text-lg font-medium text-white">
-                  {staffData?.email || staffName || "User"}
+                  {staffData?.firstName || staffName || "User"}
                 </h1>
               </div>
             </div>
