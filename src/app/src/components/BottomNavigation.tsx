@@ -1,9 +1,8 @@
 import { Home, Menu, ArrowLeftRight, Settings, Building2 } from 'lucide-react';
 import { useSafeArea } from '../hooks/useSafeAreaView';
+import type { Tab, UserRole } from '../types/common.types';
 // import { useSafeArea } from '../services/useSafeArea';
 
-type Tab = 'home' | 'transactions' | 'menu' | 'settings';
-type UserRole = 'agent' | 'user';
 
 interface BottomNavigationProps {
   currentTab: Tab;

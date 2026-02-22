@@ -225,14 +225,14 @@ export const useAuthStore = create<AuthState>()(
 
       getUserRole: () => {
         const user = get().user;
-        if (!user) return 'user';
+        if (!user) return "";
 
         // Map API roles to app UserRole type (2 distinct roles)
         // Both BusinessOwner and Manager map to 'business-owner' (consolidated)
         if (user.role === 'Agent') {
-          return 'agent';
-        }
-        return 'user';
+          return 'Agent';
+        } 
+        return 'User';
       },
 
       getPosition: () => {
