@@ -231,7 +231,7 @@ function AppContent() {
   const [currentTab, setCurrentTab] = useState<Tab>("home");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isFirstLogin, setIsFirstLogin] = useState(false);
-  const [userRole, setUserRole] = useState<UserRole>("user");
+  const [userRole, setUserRole] = useState<UserRole>("User");
   const [staffData, setStaffData] = useState<LoginUserData | null>(null);
   const staffName = useMemo(() => staffData?.firstName || staffData?.email || "", [staffData]);
   const [forgotPasswordUsername, setForgotPasswordUsername] = useState("");
@@ -338,6 +338,8 @@ function AppContent() {
         const mappedRole = getUserRole();
         const position = getPosition();
 
+        // console.log("Mapped role:", mappedRole);
+
         // Set state from store
         setUserRole(mappedRole);
         setStaffData({
@@ -425,6 +427,10 @@ function AppContent() {
       const mappedRole = getUserRole();
       const position = getPosition();
 
+        console.log("Mapped role:", mappedRole);
+
+
+      
       // Transform store data to app state format
       setUserRole(mappedRole);
       setStaffData({
@@ -519,7 +525,7 @@ function AppContent() {
   };
 
   const isBusinessOwner = () => {
-    return userRole === "agent";
+    return userRole === "Agent";
   };
 
   const navigateToScreen = (screen: Screen, tab?: Tab) => {
@@ -697,7 +703,7 @@ function AppContent() {
           );
           setIsAuthenticated(false);
           setCurrentScreen("initial-login");
-          setUserRole("user");
+          setUserRole("User");
           setStaffData(null);
         }
       },
@@ -1295,7 +1301,7 @@ function AppContent() {
   const renderTabContent = () => {
     switch (currentTab) {
       case "home":
-        if (userRole === "agent") {
+        if (userRole === "Agent") {
           return (
             <Suspense fallback={<LoadingSpinner />}>
               <ManagerDashboard

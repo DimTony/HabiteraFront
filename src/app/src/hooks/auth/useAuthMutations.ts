@@ -16,7 +16,6 @@ import type {
 } from "../../types/api.types";
 import apiClient from "../../api/apiClient";
 
-
 // Auth-specific response wrapper types
 type LoginApiResponse = ApiResponse<LoginApiResponseData>;
 type RegisterApiResponse = ApiResponse<LoginApiResponseData>;
@@ -51,47 +50,6 @@ export const loginUser = async (
 
   const apiData = response.data.data;
 
-  // Check for responseCode "01" (device ID change requiring OTP verification)
-  // if(response.data.status?.toLowerCase() !== 'success' && apiData?.responseCode === '01') {
-  //   // Return special response indicating OTP is required
-  //   return {
-  //     success: false,
-  //     message: response.data.message || 'Device verification required',
-  //     otpRequired: true,
-  //     responseCode: '01',
-  //     user: {
-  //       id: String(apiData?.id || 0),
-  //       name: apiData?.fullName || apiData?.userName || '',
-  //       username: apiData?.userName || '',
-  //       email: apiData?.email || '',
-  //       role: (apiData?.role || apiData?.userType || 'Staff') as "Staff" | "Manager" | "BusinessOwner",
-  //       position: (apiData?.role === 'BusinessOwner' ? 'Business Owner' : apiData?.role === 'Manager' ? 'Manager' : 'Staff'),
-  //       department: (apiData?.role === 'BusinessOwner' ? 'Management' : 'Operations'),
-  //       employeeId: apiData?.customerId || String(apiData?.id || 0),
-  //       customerId: apiData?.customerId || undefined,
-  //       businessId: apiData?.businessId || undefined,
-  //       phone: apiData?.phone || undefined,
-  //       userType: apiData?.userType || undefined,
-  //       status: apiData?.status || undefined,
-  //       storedId: apiData?.storedId || null,
-  //       accountType: apiData?.accountType || null,
-  //       permissions: {
-  //         acceptPayments: true,
-  //         viewReports: true,
-  //         manageInventory: (apiData?.role === 'BusinessOwner' || apiData?.role === 'Manager'),
-  //         processOrders: true,
-  //         manageStaff: (apiData?.role === 'BusinessOwner' || apiData?.role === 'Manager'),
-  //         viewAnalytics: (apiData?.role === 'BusinessOwner' || apiData?.role === 'Manager'),
-  //         exportData: (apiData?.role === 'BusinessOwner' || apiData?.role === 'Manager'),
-  //       }
-  //     },
-  //     token: '',
-  //     refreshToken: '',
-  //     inAppToken: '',
-  //     expiresIn: 0,
-  //   };
-  // }
-
   if (!response.data.data.token || !response.data.data.user) {
     const message = response?.data?.message || "Unable to login.";
     throw new Error(message);
@@ -108,17 +66,13 @@ export const loginUser = async (
   // Preserve API format (PascalCase) for role/userType
   // API returns: "BusinessOwner", "Manager", or "Staff"
   // Auth store expects the same PascalCase format
-  // const roleFromApi = apiData.user.userType as "User" | "Agent";
+  const roleFromApi = apiData.user.role as "User" | "Agent";
   // SECURITY FIX: CWE-117 - Sanitize role data before logging
   //   console.log('🔍 Role from API (preserved):', sanitizeForLog(roleFromApi));
 
   // Normalize to proper PascalCase in case API returns variations
-  // const normalizedRole: "User" | "Agent" | "" =
-  //   roleFromApi === "User"
-  //     ? "User"
-  //     : roleFromApi === "Agent"
-  //     ? "Agent"
-  //     : ""; // Default to Staff
+  const normalizedRole: "User" | "Agent" =
+    roleFromApi === "User" ? "User" : "Agent";
 
   // SECURITY FIX: CWE-117 - Sanitize normalized role before logging
   //   console.log('🔍 Normalized role:', sanitizeForLog(normalizedRole));
@@ -154,7 +108,7 @@ export const loginUser = async (
       fullName: apiData.user.fullName,
       phoneNumber: apiData.user.phoneNumber,
       profilePhoto: apiData.user.profilePhoto,
-      role: apiData.user.role,
+      role: normalizedRole,
       status: apiData.user.status,
       createdAt: apiData.user.createdAt,
       updatedAt: apiData.user.updatedAt,
@@ -283,10 +237,9 @@ export const generateOTPByUsername = async (
 ): Promise<string> => {
   // console.log('📱 [FORGOT PASSWORD] Generating OTP for username:', sanitizeForLog(username));
 
-  const response =
-    await apiClient.post<GenerateOTPByUsernameApiResponse>(
-      `/GenerateOTPByUsername?username=${encodeURIComponent(username)}`,
-    );
+  const response = await apiClient.post<GenerateOTPByUsernameApiResponse>(
+    `/GenerateOTPByUsername?username=${encodeURIComponent(username)}`,
+  );
 
   //   console.log('✅ [FORGOT PASSWORD] OTP generation response:', sanitizeForLog(JSON.stringify(response.data)));
 
@@ -317,11 +270,10 @@ export const validateOTPForgotPassword = async (
 ): Promise<boolean> => {
   // console.log('🔐 [FORGOT PASSWORD] Validating OTP for recipientId:', sanitizeForLog(data.recipientId));
 
-  const response =
-    await apiClient.post<ValidateOTPForgotPasswordApiResponse>(
-      "/ValidateOTP",
-      data,
-    );
+  const response = await apiClient.post<ValidateOTPForgotPasswordApiResponse>(
+    "/ValidateOTP",
+    data,
+  );
 
   // console.log('✅ [FORGOT PASSWORD] OTP validation response:', sanitizeForLog(JSON.stringify(response.data)));
 
@@ -350,11 +302,10 @@ export const forgotPassword = async (
 ): Promise<LoginResponse> => {
   //   console.log('🔑 [FORGOT PASSWORD] Completing password reset for username:', sanitizeForLog(data.username || ''));
 
-  const response =
-    await apiClient.post<ForgotPasswordApiResponse>(
-      "/ForgotPassword",
-      data,
-    );
+  const response = await apiClient.post<ForgotPasswordApiResponse>(
+    "/ForgotPassword",
+    data,
+  );
 
   //   console.log('✅ [FORGOT PASSWORD] Password reset response:', sanitizeForLog(JSON.stringify(response.data)));
 
@@ -442,11 +393,10 @@ export const resetPassword = async (
 ): Promise<LoginResponse> => {
   //   console.log('🔑 [RESET PASSWORD] Resetting password for user:', sanitizeForLog(data.username));
 
-  const response =
-    await apiClient.post<ResetPasswordApiResponse>(
-      "/ResetPassword",
-      data,
-    );
+  const response = await apiClient.post<ResetPasswordApiResponse>(
+    "/ResetPassword",
+    data,
+  );
 
   //   console.log('✅ [RESET PASSWORD] Response:', sanitizeForLog(JSON.stringify(response.data)));
 

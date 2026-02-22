@@ -1,6 +1,6 @@
 // Common types used across the application
 
-export type UserRole = 'agent' | 'user';
+export type UserRole = 'Agent' | 'User' | '';
 
 export type Tab = 'home' | 'transactions' | 'menu' | 'settings';
 

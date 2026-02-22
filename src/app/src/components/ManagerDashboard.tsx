@@ -119,26 +119,24 @@ export function ManagerDashboard({
                   {/* {isLoadingAccounts && (
                         <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin" />
                       )} */}
+                  <h1 className="text-lg font-medium text-white">
+                    {staffData?.firstName || staffName || "User"}
+                  </h1>
                 </div>
-
-                {/* Name */}
-                <h1 className="text-lg font-medium text-white">
-                  {staffData?.firstName || staffName || "User"}
-                </h1>
               </div>
             </div>
 
             <div className="flex flex-col space-y-1 mt-2">
               <div className="flex items-center space-x-2 text-white/70 text-xs">
                 <Mail className="w-3.5 h-3.5" />
-                <span>{staffData?.email || "ajiriogheneokeya@gmail.com"}</span>
+                <span>{staffData?.email || ""}</span>
                 <button className="ml-1 hover:bg-white/10 rounded p-0.5 transition-colors">
                   <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
               <div className="flex items-center space-x-2 text-white/70 text-xs">
                 <Phone className="w-3.5 h-3.5" />
-                <span>{staffData?.status || "08012345678"}</span>
+                <span>{staffData?.phoneNumber || "08012345678"}</span>
                 <button className="ml-1 hover:bg-white/10 rounded p-0.5 transition-colors">
                   <ExternalLink className="w-3 h-3" />
                 </button>
