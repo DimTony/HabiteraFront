@@ -55,51 +55,17 @@ export const loginUser = async (
     throw new Error(message);
   }
 
-  // if (!response.data.data) {
-  //   console.error('❌ No response.data.data. Full response:', response.data);
-  //   throw new Error(`Invalid login response structure. Response`);
-  // }
-
-  // SECURITY FIX: CWE-117 - Sanitize API data before logging
-  //   console.log('✅ API Data:', sanitizeForLog(JSON.stringify(apiData)));
-
-  // Preserve API format (PascalCase) for role/userType
-  // API returns: "BusinessOwner", "Manager", or "Staff"
-  // Auth store expects the same PascalCase format
   const roleFromApi = apiData.user.role as "User" | "Agent";
-  // SECURITY FIX: CWE-117 - Sanitize role data before logging
-  //   console.log('🔍 Role from API (preserved):', sanitizeForLog(roleFromApi));
-
-  // Normalize to proper PascalCase in case API returns variations
   const normalizedRole: "User" | "Agent" =
     roleFromApi === "User" ? "User" : "Agent";
 
-  // SECURITY FIX: CWE-117 - Sanitize normalized role before logging
-  //   console.log('🔍 Normalized role:', sanitizeForLog(normalizedRole));
 
   const transformedResponse: LoginResponse = {
-    //     success: boolean;
-    // message: string;
-    // statusCode: number;
-    // token: string;
-    // refreshToken: string;
-    // profileComplete: boolean;
-    // user: {
-    // id: string;
-    // email: string;
-    // profilePhoto: string;
-    // role: "Agent" | "User";
-    // status: string;
-    // createdAt: string;
-    // updatedAt: string;
-    // lastLoginAt: string;
-    // };
     success: response.data.success,
     message: response.data.message || "",
     statusCode: response.data.statusCode,
     token: response.data.data.token,
     refreshToken: response.data.data.refreshToken,
-    // profileComplete: false,
     user: {
       id: apiData.user.id,
       email: apiData.user.email,
@@ -117,9 +83,6 @@ export const loginUser = async (
       profileCompletedAt: apiData.user.profileCompletedAt,
     },
   };
-
-  // SECURITY FIX: CWE-117 - Sanitize transformed response before logging
-  //   console.log('✅ TRANSFORMED RESPONSE:', sanitizeForLog(JSON.stringify(transformedResponse)));
 
   return transformedResponse;
 };
