@@ -4,6 +4,17 @@ export interface ApiResponse<T = any> {
   data: T;
 }
 
+export interface NewListingFormData {
+  firstName: string;
+  lastName: string;
+  licenseNumber: string;
+  agencyName: string;
+  phoneNumber: string;
+  city: string;
+  state: string;
+  country: string;
+}
+
 export interface PropertySearchRequest {
   query?: string;
   city?: string;
