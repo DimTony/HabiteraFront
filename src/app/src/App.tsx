@@ -1452,7 +1452,7 @@ function AppContent() {
       <div className="min-h-screen bg-background overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
-            key="your-new-screen-name"
+            key="add-property"
             variants={screenVariants}
             initial="enter"
             animate="center"

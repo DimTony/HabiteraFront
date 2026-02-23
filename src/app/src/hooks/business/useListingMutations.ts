@@ -73,11 +73,11 @@ export const saveListingForLater = async (
       JSON.stringify(response, null, 2),
     );
 
-    if (response.data.statusCode !== 200) {
-      window.location.reload();
-    }
+    // if (response.data.statusCode !== 201) {
+    //   window.location.reload();
+    // }
 
-    const apiData = response.data.data;
+    const apiData = response.data;
 
     return apiData;
   } catch (error: any) {
