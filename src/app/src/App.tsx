@@ -67,6 +67,12 @@ const AddPropertyScreen = lazy(() =>
   })),
 );
 
+const EditPropertyScreen = lazy(() =>
+  import("./components/EditPropertyScreen").then((module) => ({
+    default: module.EditProperty,
+  })),
+);
+
 const CompleteProfileScreen = lazy(() =>
   import("./components/CompleteProfile").then((module) => ({
     default: module.CompleteProfile,
@@ -189,6 +195,7 @@ type Screen =
   | "dashboard"
   | "complete-profile"
   | "add-property"
+  | "edit-property"
   | "first-login-password-change"
   | "admin-portal"
   | "forgot-password"
@@ -249,6 +256,8 @@ function AppContent() {
       );
     },
   );
+  const [selectedPropertyToEdit, setSelectedPropertyToEdit] =
+    useState<string>("");
 
   useEffect(() => {
     const checkSplashScreen = async () => {
@@ -936,6 +945,13 @@ function AppContent() {
     navigateToScreen("add-property");
   };
 
+  const handleNavigateToEditProperty = (listingId?: string) => {
+    if (listingId) {
+      setSelectedPropertyToEdit(listingId);
+    }
+    navigateToScreen("edit-property");
+  };
+
   const handleBackFromAddProperty = () => {
     // Clear selected items when leaving order link screen
     // setSelectedItemsForOrderLink([]);
@@ -1307,6 +1323,7 @@ function AppContent() {
                 staffName={staffName}
                 staffData={staffData}
                 onNavigateToAddProperty={handleNavigateToAddProperty}
+                onNavigateToEditProperty={handleNavigateToEditProperty}
                 // currentKYCTier={currentKYCTier}
                 // isFirstLogin={isFirstLogin}
                 // selectedBusinessTools={selectedBusinessTools}
@@ -1467,6 +1484,42 @@ function AppContent() {
                   setCurrentScreen("dashboard");
                 }}
                 onBack={handleBackFromAddProperty}
+
+                // Add other props as needed
+                // staffData={staffData}
+                // userRole={userRole}
+              />
+            </Suspense>
+          </motion.div>
+        </AnimatePresence>
+        <Toaster />
+      </div>
+    );
+  }
+
+  if (currentScreen === "edit-property") {
+    return (
+      <div className="min-h-screen bg-background overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key="edit-property"
+            variants={screenVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={slideTransition}
+            className="absolute inset-0"
+          >
+            <Suspense fallback={<LoadingSpinner />}>
+              <EditPropertyScreen
+                userRole={userRole}
+                onComplete={() => {
+                  toast.success("Property listing saved successfully!");
+                  setCurrentScreen("dashboard");
+                }}
+                listingId={selectedPropertyToEdit}
+                onBack={handleBackFromAddProperty}
+
                 // Add other props as needed
                 // staffData={staffData}
                 // userRole={userRole}

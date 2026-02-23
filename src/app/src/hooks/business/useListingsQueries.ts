@@ -73,7 +73,8 @@ export const useListingQuery = (
 
       return fetchPropertyListings(query);
     },
-    enabled: !!query,
+    enabled: false,
+    // enabled: !!query,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
     ...options,
