@@ -1,14 +1,49 @@
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
-import type { ListingApiResponse, ListingResult, PropertySearchRequest } from '../../types/listing.types';
-import apiClient from '../../api/apiClient';
-
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import type {
+  ListingApiResponse,
+  ListingResult,
+  PropertySearchRequest,
+} from "../../types/listing.types";
+import apiClient from "../../api/apiClient";
 
 export const fetchPropertyListings = async (
   query: PropertySearchRequest,
 ): Promise<ListingResult> => {
+  console.log("QQQQQQQQQ", query);
   const response = await apiClient.post<ListingApiResponse>(
     "/Property/Search",
     query,
+  );
+  return response.data.data;
+};
+
+const fetchActiveListings = async (query: PropertySearchRequest) => {
+  const response = await apiClient.get<ListingApiResponse>(
+    "/Property/Search/Active",
+    // query,
+    {
+      params: query
+    }
+  );
+  return response.data.data;
+};
+
+const fetchUnderReviewListings = async (query: PropertySearchRequest) => {
+  const response = await apiClient.get<ListingApiResponse>(
+    "/Property/Search/UnderReview",
+    {
+      params: query,
+    },
+  );
+  return response.data.data;
+};
+
+const fetchInactiveListings = async (query: PropertySearchRequest) => {
+  const response = await apiClient.get<ListingApiResponse>(
+    "/Property/Search/Inactive",
+    {
+      params: query,
+    },
   );
   return response.data.data;
 };
@@ -27,7 +62,14 @@ export const useListingQuery = (
       query.pageNumber,
       query.pageSize,
     ],
-    queryFn: () => fetchPropertyListings(query),
+    queryFn: async () => {
+      if (query.status === "Active") return fetchActiveListings(query);
+      if (query.status === "UnderReview")
+        return fetchUnderReviewListings(query);
+      if (query.status === "Inactive") return fetchInactiveListings(query);
+
+      return fetchPropertyListings(query);
+    },
     enabled: !!query,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
@@ -179,7 +221,7 @@ export const useListingQuery = (
 //     const params = new URLSearchParams();
 //     params.append('email', request.email);
 //     const response = await onboardingLoginApiClient.post<GenerateEmailOTPApiResponse>('/GenerateEmailOTP', {}, { params });
-    
+
 //     if (response.data.status?.toLowerCase() !== 'success') {
 //       throw new Error(response.data.message || 'Failed to send OTP email');
 //     }

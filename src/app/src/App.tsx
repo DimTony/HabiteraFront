@@ -198,8 +198,6 @@ type Screen =
   | "unregistered-business-choice"
   | "store-linking";
 
-
-
 interface Transaction {
   id: string;
   type: "inflow" | "outflow";
@@ -233,7 +231,10 @@ function AppContent() {
   const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [userRole, setUserRole] = useState<UserRole>("User");
   const [staffData, setStaffData] = useState<LoginUserData | null>(null);
-  const staffName = useMemo(() => staffData?.firstName || staffData?.email || "", [staffData]);
+  const staffName = useMemo(
+    () => staffData?.firstName || staffData?.email || "",
+    [staffData],
+  );
   const [forgotPasswordUsername, setForgotPasswordUsername] = useState("");
   const [selectedBusinessTools, setSelectedBusinessTools] = useState<string[]>(
     () => {
@@ -332,7 +333,7 @@ function AppContent() {
         // SECURITY FIX: CWE-117 - Sanitize user data before logging
         console.log(
           "✅ BIOMETRIC LOGIN - Using Zustand auth store:",
-          JSON.stringify(storeUser)
+          JSON.stringify(storeUser),
         );
 
         const mappedRole = getUserRole();
@@ -421,16 +422,14 @@ function AppContent() {
       // SECURITY FIX: CWE-117 - Sanitize user data before logging
       console.log(
         "✅ API LOGIN SUCCESS - Using Zustand auth store:",
-        JSON.stringify(storeUser)
+        JSON.stringify(storeUser),
       );
 
       const mappedRole = getUserRole();
       const position = getPosition();
 
-        console.log("Mapped role:", mappedRole);
+      console.log("Mapped role:", mappedRole);
 
-
-      
       // Transform store data to app state format
       setUserRole(mappedRole);
       setStaffData({
@@ -515,7 +514,7 @@ function AppContent() {
     };
   }) => {
     startTransition(() => {
-       setIsAuthenticated(true);
+      setIsAuthenticated(true);
       setCurrentScreen("complete-profile");
 
       console.log(
@@ -1463,6 +1462,10 @@ function AppContent() {
           >
             <Suspense fallback={<LoadingSpinner />}>
               <AddPropertyScreen
+                userRole={userRole}
+                onComplete={() => {
+                  setCurrentScreen("dashboard");
+                }}
                 onBack={handleBackFromAddProperty}
                 // Add other props as needed
                 // staffData={staffData}

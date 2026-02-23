@@ -19,22 +19,14 @@ import {
   completeUserProfile,
 } from "../hooks/profile/useProfileMutations";
 import type { AgentFormData, UserFormData } from "../types/profile.types";
+import type { LoginUserData } from "../types/api.types";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface CompleteProfileProps {
   onBack?: () => void;
   userRole: UserRole;
-  staffData?: {
-    id: string;
-    email: string;
-    profilePhoto: string;
-    role: "Agent" | "User";
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    lastLoginAt: string;
-  } | null;
+  staffData?: LoginUserData | null;
   onComplete?: () => void;
 }
 
@@ -274,7 +266,7 @@ export function CompleteProfile({
   useEffect(() => {
     const email = staffData?.email || "";
 
-    if (userRole === "agent") {
+    if (userRole === "Agent") {
       setAgentForm((prev) => ({
         ...prev,
         phoneNumber: prev.phoneNumber || "",
@@ -290,7 +282,7 @@ export function CompleteProfile({
 
   // Get current location for user role
   useEffect(() => {
-    if (userRole === "user" && navigator.geolocation) {
+    if (userRole === "User" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserForm((prev) => ({
@@ -350,7 +342,7 @@ export function CompleteProfile({
   };
 
   const isFormValid =
-    userRole === "agent" ? isAgentFormValid() : isUserFormValid();
+    userRole === "Agent" ? isAgentFormValid() : isUserFormValid();
 
   const handleProfileSubmit = async () => {
     if (!isFormValid || isSubmitting) return;
@@ -359,7 +351,7 @@ export function CompleteProfile({
 
     try {
       const response =
-        userRole === "agent"
+        userRole === "Agent"
           ? await completeAgentProfile(agentForm)
           : await completeUserProfile(userForm);
 
@@ -380,7 +372,7 @@ export function CompleteProfile({
     }
   };
 
-  const currentForm = userRole === "agent" ? agentForm : userForm;
+  const currentForm = userRole === "Agent" ? agentForm : userForm;
   const displayName = `${currentForm.firstName || ""} ${
     currentForm.lastName || ""
   }`.trim();
@@ -439,7 +431,7 @@ export function CompleteProfile({
               className="w-3.5 h-3.5 object-cover"
             />
             <span className="text-sm text-gray-500 font-medium">
-              {userRole === "agent" ? "Verified Agent" : "Verified User"}
+              {userRole === "Agent" ? "Verified Agent" : "Verified User"}
             </span>
           </div>
         </div>
@@ -450,10 +442,10 @@ export function CompleteProfile({
           <ProfileInput
             label="First Name"
             value={
-              userRole === "agent" ? agentForm.firstName : userForm.firstName
+              userRole === "Agent" ? agentForm.firstName : userForm.firstName
             }
             onChange={(val) =>
-              userRole === "agent"
+              userRole === "Agent"
                 ? updateAgentField("firstName", val)
                 : updateUserField("firstName", val)
             }
@@ -463,10 +455,10 @@ export function CompleteProfile({
           <ProfileInput
             label="Last Name"
             value={
-              userRole === "agent" ? agentForm.lastName : userForm.lastName
+              userRole === "Agent" ? agentForm.lastName : userForm.lastName
             }
             onChange={(val) =>
-              userRole === "agent"
+              userRole === "Agent"
                 ? updateAgentField("lastName", val)
                 : updateUserField("lastName", val)
             }
@@ -484,12 +476,12 @@ export function CompleteProfile({
           <ProfileInput
             label="Phone Number"
             value={
-              userRole === "agent"
+              userRole === "Agent"
                 ? agentForm.phoneNumber
                 : userForm.phoneNumber
             }
             onChange={(val) =>
-              userRole === "agent"
+              userRole === "Agent"
                 ? updateAgentField("phoneNumber", val)
                 : updateUserField("phoneNumber", val)
             }
@@ -498,7 +490,7 @@ export function CompleteProfile({
           />
 
           {/* ── Agent-Specific Fields ─────────────────────────────────── */}
-          {userRole === "agent" && (
+          {userRole === "Agent" && (
             <>
               <ProfileInput
                 label="License Number"
@@ -517,7 +509,7 @@ export function CompleteProfile({
           )}
 
           {/* ── User-Specific Fields ──────────────────────────────────── */}
-          {userRole === "user" && (
+          {userRole === "User" && (
             <ProfileSelect
               label="Preferred Language"
               value={userForm.preferredLanguage}
@@ -535,9 +527,9 @@ export function CompleteProfile({
             <div className="space-y-6">
               <ProfileInput
                 label="City"
-                value={userRole === "agent" ? agentForm.city : userForm.city}
+                value={userRole === "Agent" ? agentForm.city : userForm.city}
                 onChange={(val) =>
-                  userRole === "agent"
+                  userRole === "Agent"
                     ? updateAgentField("city", val)
                     : updateUserField("city", val)
                 }
@@ -546,9 +538,9 @@ export function CompleteProfile({
 
               <ProfileSelect
                 label="State"
-                value={userRole === "agent" ? agentForm.state : userForm.state}
+                value={userRole === "Agent" ? agentForm.state : userForm.state}
                 onChange={(val) =>
-                  userRole === "agent"
+                  userRole === "Agent"
                     ? updateAgentField("state", val)
                     : updateUserField("state", val)
                 }
@@ -558,10 +550,10 @@ export function CompleteProfile({
               <ProfileInput
                 label="Country"
                 value={
-                  userRole === "agent" ? agentForm.country : userForm.country
+                  userRole === "Agent" ? agentForm.country : userForm.country
                 }
                 onChange={(val) =>
-                  userRole === "agent"
+                  userRole === "Agent"
                     ? updateAgentField("country", val)
                     : updateUserField("country", val)
                 }
@@ -572,10 +564,10 @@ export function CompleteProfile({
 
           {/* ── Location Tags Preview ─────────────────────────────────── */}
           <LocationTags
-            city={userRole === "agent" ? agentForm.city : userForm.city}
-            state={userRole === "agent" ? agentForm.state : userForm.state}
+            city={userRole === "Agent" ? agentForm.city : userForm.city}
+            state={userRole === "Agent" ? agentForm.state : userForm.state}
             country={
-              userRole === "agent" ? agentForm.country : userForm.country
+              userRole === "Agent" ? agentForm.country : userForm.country
             }
           />
         </div>
