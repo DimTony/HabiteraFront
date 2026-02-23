@@ -50,20 +50,75 @@ export interface PropertySearchRequest {
   pageSize?: number;
   status?: "Active" | "UnderReview" | "Inactive";
   agentId?: string;
+  search?: string;
 }
 
+export interface Listing {
+  id: string;
+
+  agentId: string;
+  agentName: string;
+
+  title: string;
+  description: string;
+  propertyType: string;
+  listingType: string;
+  status: string;
+
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  fullAddress: string;
+  location: {
+    lat: number;
+    lng: number;
+  } | null;
+
+  price: number;
+  currency: string;
+  pricePerSquareFoot: number;
+  tenor: string;
+
+  bedrooms: number;
+  bathrooms: number;
+  squareFeet: number;
+  lotSize: number;
+  yearBuilt: number;
+
+  images: string[];
+  primaryImageUrl: string | null;
+
+  amenities: string[];
+  amenityTags: string[];
+  amenitiesData: Record<string, any>;
+
+  viewCount: number;
+  favoriteCount: number;
+  isFavorited: boolean;
+  isFeatured: boolean;
+
+  isPublished: boolean;
+  daysOnMarket: number;
+  publishedAt: string | null;
+
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface ListingResult {
-  responseCode?: string | null;
-  responseMessage?: string | null;
-  transactions?: any[] | null;
-  totalCount?: number | null;
-  items?: any[] | null;
-  accountNumber?: string | null;
-  availableBalance?: string | null;
-  clearedBalance?: string | null;
-  openingBalance?: string | null;
-  closingBalance?: string | null;
+  data: Listing[];
+  error: any[] | null;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  message: string;
+  pageNumber: number;
+  pageSize: number;
+  statusCode: number;
+  success: boolean;
+  totalPages: number;
+  totalRecords: number;
 }
 
 export type ListingApiResponse = ApiResponse<ListingResult>;

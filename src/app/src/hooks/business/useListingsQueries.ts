@@ -10,47 +10,50 @@ export const fetchPropertyListings = async (
   query: PropertySearchRequest,
 ): Promise<ListingResult> => {
   console.log("QQQQQQQQQ", query);
-  const response = await apiClient.post<ListingApiResponse>(
+  const response = await apiClient.post<ListingResult>(
     "/Property/Search",
     query,
   );
-  return response.data.data;
+  return response.data;
 };
 
 const fetchActiveListings = async (query: PropertySearchRequest) => {
-  const response = await apiClient.get<ListingApiResponse>(
+  const response = await apiClient.get<ListingResult>(
     "/Property/Search/Active",
     // query,
     {
       params: query
     }
   );
-  return response.data.data;
+  return response.data;
 };
 
 const fetchUnderReviewListings = async (query: PropertySearchRequest) => {
-  const response = await apiClient.get<ListingApiResponse>(
+  const response = await apiClient.get<ListingResult>(
     "/Property/Search/UnderReview",
     {
       params: query,
     },
   );
-  return response.data.data;
+  return response.data;
 };
 
 const fetchInactiveListings = async (query: PropertySearchRequest) => {
-  const response = await apiClient.get<ListingApiResponse>(
+  const response = await apiClient.get<ListingResult>(
     "/Property/Search/Inactive",
     {
       params: query,
     },
   );
-  return response.data.data;
+  return response.data;
 };
 
 export const useListingQuery = (
   query: PropertySearchRequest,
-  options?: Omit<UseQueryOptions<ListingResult, Error>, "queryKey" | "queryFn">,
+  options?: Omit<
+    UseQueryOptions<ListingResult, Error>,
+    "queryKey" | "queryFn"
+  >,
 ) => {
   return useQuery<ListingResult, Error>({
     queryKey: [

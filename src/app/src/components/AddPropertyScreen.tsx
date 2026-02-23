@@ -259,9 +259,8 @@ export function AddProperty({
       const response =
         userRole === "Agent" ? await saveListingForLater(form as any) : null;
 
-      console.log("GGGGG", response);
 
-      if (response?.statusCode === 200) {
+      if (response?.statusCode === 201) {
         toast.success("Property listing saved successfully!");
         onComplete?.();
       } else {
